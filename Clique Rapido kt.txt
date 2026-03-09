@@ -1,0 +1,72 @@
+package com.example.cliquerapido
+
+import android.os.Bundle
+import android.os.CountDownTimer
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+
+class MainActivity : AppCompatActivity() {
+
+    // Variáveis para controlar o jogo
+    private var cliques = 0
+    private var jogoAtivo = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_main)
+
+        // Configuração para a tela não ficar por baixo da barra de status
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        // 1. Referências dos componentes do layout
+        val tvTimer = findViewById<TextView>(R.id.tvTimer)
+        val tvContador = findViewById<TextView>(R.id.tvContador)
+        val btnClique = findViewById<Button>(R.id.btnClique)
+        val btnReset = findViewById<Button>(R.id.btnReset)
+
+        // 2. Configuração do Temporizador (10 segundos)
+        val timer = object : CountDownTimer(10000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                tvTimer.text = "Tempo: ${millisUntilFinished / 1000}s"
+            }
+
+            override fun onFinish() {
+                jogoAtivo = false
+                tvTimer.text = "Tempo: 0s"
+                btnClique.isEnabled = false // Trava o botão
+                btnReset.visibility = Button.VISIBLE // Mostra o botão de reiniciar
+                Toast.makeText(this@MainActivity, "Fim de jogo! Cliques: $cliques", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        // 3. Lógica do botão de clique
+        btnClique.setOnClickListener {
+            if (!jogoAtivo) {
+                jogoAtivo = true
+                timer.start()
+            }
+            cliques++
+            tvContador.text = "Cliques: $cliques"
+        }
+
+        // 4. Lógica do botão de reiniciar
+        btnReset.setOnClickListener {
+            cliques = 0
+            jogoAtivo = false
+            tvContador.text = "Cliques: 0"
+            tvTimer.text = "Tempo: 10s"
+            btnClique.isEnabled = true
+            btnReset.visibility = Button.GONE
+        }
+    }
+}
