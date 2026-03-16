@@ -1,0 +1,31 @@
+CREATE TABLE Clientes (
+    ClienteID INT PRIMARY KEY,
+    Nome VARCHAR(100),
+    Cidade VARCHAR(100)
+);
+
+
+CREATE TABLE Pedidos (
+    PedidoID INT PRIMARY KEY AUTO_INCREMENT,
+    ClienteID INT,
+    DataPedido DATE,
+    ValorTotal DECIMAL(10, 2),
+    FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID)
+);
+
+
+INSERT INTO Clientes (ClienteID, Nome, Cidade) VALUES (1, 'Alice', 'São Paulo');
+INSERT INTO Clientes (ClienteID, Nome, Cidade) VALUES (2, 'Bruno', 'Rio de Janeiro');
+INSERT INTO Clientes (ClienteID, Nome, Cidade) VALUES (3, 'Carla', 'Curitiba');
+INSERT INTO Clientes (ClienteID, Nome, Cidade) VALUES (4, 'Daniel', 'Belo Horizonte');
+
+
+INSERT INTO Pedidos (ClienteID, DataPedido, ValorTotal) VALUES (1, '2024-08-01', 150.00);
+INSERT INTO Pedidos (ClienteID, DataPedido, ValorTotal) VALUES (1, '2024-08-15', 200.00);
+INSERT INTO Pedidos (ClienteID, DataPedido, ValorTotal) VALUES (2, '2024-08-20', 300.00);
+INSERT INTO Pedidos (ClienteID, DataPedido, ValorTotal) VALUES (3, '2024-08-18', 100.00);
+
+
+SELECT Clientes.Nome, Pedidos.PedidoID, Pedidos.DataPedido, Pedidos.ValorTotal
+FROM Clientes
+INNER JOIN Pedidos ON Clientes.ClienteID = Pedidos.ClienteID;
