@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Login - Biblioteca</title>
+</head>
+<body style="justify-content: center; height: 100vh;">
+    <div class="container" style="max-width: 400px;">
+        <h2 style="text-align: center;">📚 Sistema Biblioteca</h2>
+        <form method="POST">
+            <input type="email" name="email" placeholder="E-mail" required style="width: 94%;">
+            <input type="password" name="senha" placeholder="Senha" required style="width: 94%;">
+            <button type="submit" style="width: 100%;">Entrar</button>
+        </form>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}<p style="color:red; text-align:center;">{{ messages[0] }}</p>{% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>

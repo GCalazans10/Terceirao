@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Dashboard - Livros</title>
+</head>
+<body>
+    <nav>
+        <span>Bem-vindo, <b>{{ session['nome'] }}</b></span> | 
+        <a href="/dashboard">Livros</a> | 
+        <a href="/autores">Autores</a> | 
+        <a href="/logout" style="color: #e74c3c;">Sair</a>
+    </nav>
+
+    <div class="container">
+        <h3>📖 Cadastrar Novo Livro</h3>
+        <form action="/cadastrar_livro" method="POST" style="display: flex; gap: 10px;">
+            <input type="text" name="titulo" placeholder="Título do Livro" required style="flex: 2;">
+            <select name="id_autor" required style="flex: 1;">
+                <option value="">Selecione o Autor</option>
+                {% for autor in autores %}
+                <option value="{{ autor.id }}">{{ autor.nome }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Adicionar</button>
+        </form>
+
+        <h3>📚 Acervo da Biblioteca</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Autor (JOIN)</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for livro in livros %}
+                <tr>
+                    <td>{{ livro.id }}</td>
+                    <td>{{ livro.titulo }}</td>
+                    <td>{{ livro.autor }}</td>
+                    <td>{{ livro.status }}</td>
+                    <td>
+                        {% if livro.status == 'disponivel' %}
+                        <a href="/alugar/{{ livro.id }}" style="color: #27ae60;">Alugar</a>
+                        {% else %}
+                        <span style="color: #7f8c8d;">Indisponível</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
