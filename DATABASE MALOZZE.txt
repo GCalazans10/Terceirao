@@ -1,0 +1,30 @@
+-- Tabela: serie
+CREATE TABLE serie (
+    id_serie INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome_serie VARCHAR(50) NOT NULL,
+    turno VARCHAR(20) NOT NULL
+);
+
+-- Tabela: materia
+CREATE TABLE materia (
+    id_materia INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome_materia VARCHAR(100) NOT NULL
+);
+
+-- Tabela: professor
+CREATE TABLE professor (
+    id_professor INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    id_materia INTEGER,
+    FOREIGN KEY (id_materia) REFERENCES materia(id_materia) ON DELETE SET NULL
+);
+
+-- Tabela: aluno
+CREATE TABLE aluno (
+    id_aluno INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    data_nascimento DATE NOT NULL,
+    id_serie INTEGER,
+    FOREIGN KEY (id_serie) REFERENCES serie(id_serie) ON DELETE SET NULL
+);
