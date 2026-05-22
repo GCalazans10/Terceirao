@@ -1,0 +1,18 @@
+CREATE TABLE nota (
+    id_nota INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_aluno INTEGER NOT NULL,
+    id_materia INTEGER NOT NULL,
+    nota_b1 REAL CHECK(nota_b1 >= 0 AND nota_b1 <= 10),
+    nota_b2 REAL CHECK(nota_b2 >= 0 AND nota_b2 <= 10),
+    nota_b3 REAL CHECK(nota_b3 >= 0 AND nota_b3 <= 10),
+    nota_b4 REAL CHECK(nota_b4 >= 0 AND nota_b4 <= 10),
+    media_final REAL GENERATED ALWAYS AS (
+        (COALESCE(nota_b1, 0) + COALESCE(nota_b2, 0) + COALESCE(nota_b3, 0) + COALESCE(nota_b4, 0)) / 
+        ((CASE WHEN nota_b1 IS NOT NULL THEN 1 ELSE 0 END) +
+         (CASE WHEN nota_b2 IS NOT NULL THEN 1 ELSE 0 END) +
+         (CASE WHEN nota_b3 IS NOT NULL THEN 1 ELSE 0 END) +
+         (CASE WHEN nota_b4 IS NOT NULL THEN 1 ELSE 0 END))
+    ) STORED,
+    FOREIGN KEY (id_aluno) REFERENCES aluno(id_aluno) ON DELETE CASCADE,
+    FOREIGN KEY (id_materia) REFERENCES materia(id_materia) ON DELETE CASCADE
+);
