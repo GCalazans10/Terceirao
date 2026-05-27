@@ -1,0 +1,18 @@
+SELECT 
+    a.nome AS 'Aluno',
+    s.nome_serie AS 'Série',
+    m.nome_materia AS 'Matéria',
+    COALESCE(n.nota_b1, '-') AS '1º Bim',
+    COALESCE(n.nota_b2, '-') AS '2º Bim',
+    COALESCE(n.nota_b3, '-') AS '3º Bim',
+    COALESCE(n.nota_b4, '-') AS '4º Bim',
+    ROUND(n.media_final, 1) AS 'Média Final',
+    CASE 
+        WHEN n.media_final >= 6.0 THEN 'Aprovado'
+        ELSE 'Recuperação/Reprovado'
+    END AS 'Situação'
+FROM nota n
+INNER JOIN aluno a ON n.id_aluno = a.id_aluno
+INNER JOIN serie s ON a.id_serie = s.id_serie
+INNER JOIN materia m ON n.id_materia = m.id_materia
+ORDER BY a.nome, m.nome_materia;
